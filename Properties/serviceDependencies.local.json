@@ -1,8 +1,9 @@
 {
   "dependencies": {
-    "mssql1": {
-      "type": "mssql.local",
-      "connectionId": "AuthDbContextConnection"
+    "mssql3": {
+      "type": "mssql.onprem",
+      "connectionId": "AuthDbContextConnection",
+      "secretStore": "LocalSecretsFile"
     }
   }
 }

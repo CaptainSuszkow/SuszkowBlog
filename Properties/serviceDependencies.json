@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "mssql1": {
+    "mssql3": {
       "type": "mssql",
       "connectionId": "AuthDbContextConnection"
     }
