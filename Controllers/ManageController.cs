@@ -13,23 +13,28 @@ namespace SuszkowBlog.Controllers
     //[Authorize(Roles ="Owner")]
     public class ManageController : Controller
     {
-        private readonly RoleManager<IdentityRole> roleManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public ManageController(RoleManager<IdentityRole> roleManager)
         {
-            this.roleManager = roleManager;
+            _roleManager = roleManager;
         }
         public IActionResult Index()
         {
             return View();
         }
         [HttpGet]
-        public IActionResult CreateRole()
+        public IActionResult ManageRole()
         {
-            return View();
+            var roles = _roleManager.Roles.ToList();
+            ManageRoleModel model = new ManageRoleModel
+            {
+                Roles = roles
+            };
+            return View(model);
         }
         [HttpPost]
-        public async Task<IActionResult> CreateRole(CreateRoleModel roleModel)
+        public async Task<IActionResult> CreateRole(ManageRoleModel roleModel)
         {
             if (ModelState.IsValid)
             {
@@ -37,10 +42,10 @@ namespace SuszkowBlog.Controllers
                 {
                     Name = roleModel.RoleName
                 };
-                IdentityResult result = await roleManager.CreateAsync(role);
+                IdentityResult result = await _roleManager.CreateAsync(role);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Manage");
+                    return RedirectToAction("ManageRole", "Manage");
                 }
 
                 foreach(var error in result.Errors)
@@ -50,5 +55,21 @@ namespace SuszkowBlog.Controllers
             }
             return View(roleModel);
         }
+        [HttpPost]
+        public async Task<IActionResult> RemoveRole(string id)
+        { 
+            if (ModelState.IsValid)
+            {
+                var role = await _roleManager.FindByIdAsync(id);
+                var result = await _roleManager.DeleteAsync(role);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("ManageRole", "Manage");
+                }
+
+            }
+            return RedirectToAction("Index", "Manage");
+        }
+        
     }
 }

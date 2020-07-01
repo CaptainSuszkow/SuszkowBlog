@@ -1,0 +1,43 @@
+﻿@model SuszkowBlog.Views.Manage.ManageRoleModel
+@{
+    ViewData["Title"] = "Role manager";
+}
+<h1 class="font-weight-light">@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateRole" method="post">
+            <h4 class="font-weight-light">Create a new role.</h4>
+            <hr />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="RoleName"></label>
+                <input asp-for="RoleName" class="form-control" />
+                <span asp-validation-for="RoleName" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Role</button>
+        </form>
+    </div>
+    <div class="col-md-6">
+        <h4 class="font-weight-light">List of roles</h4>
+        <table class="table table-hover" style="width:100%">
+            @{
+                foreach (var role in Model.Roles)
+                {
+                    <tr>
+                        <th class="font-weight-light" width="80%">@role.Name</th>
+                        <th>
+                            <form asp-controller="Manage" asp-action="RemoveRole"
+                                  asp-route-id="@role.Id" method="post">
+                                <button type="submit" class="btn btn-danger"
+                                        onclick="return confirm('Are you sure you want to delete role : @role.Name')">
+                                    Delete
+                                </button>
+                            </form>
+                        </th>
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+ </div>
