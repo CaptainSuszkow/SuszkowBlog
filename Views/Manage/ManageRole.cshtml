@@ -35,6 +35,14 @@
                                 </button>
                             </form>
                         </th>
+                        <th>
+                            <form asp-controller="Manage" asp-action="EditRole"
+                                  asp-route-id="@role.Id" method="get">
+                                <button type="submit" class="btn btn-primary">
+                                    Edit
+                                </button>
+                            </form>
+                        </th>
                     </tr>
                 }
             }
