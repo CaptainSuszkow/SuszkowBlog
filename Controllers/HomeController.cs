@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -28,6 +29,7 @@ namespace SuszkowBlog.Controllers
                 .OrderByDescending(p=>p.CreateOn.Year)
                 .ThenByDescending(p=>p.CreateOn.Month)
                 .ToListAsync();
+            posts.Reverse();
             return View(posts);
         }
 
@@ -35,6 +37,23 @@ namespace SuszkowBlog.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> AddComment(int id)
+        {
+            var post = _context.Posts.First(p => p.ID == id);
+            ViewBag.Title = post.Title;
+            ViewBag.ID = post.ID;
+
+            return View();
+        }
+        //[HttpPost]
+        //[Authorize(Roles = "User")]
+        //public async Task<IActionResult> AddComment(int id, Comment comment)
+        //{
+            
+        //}
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

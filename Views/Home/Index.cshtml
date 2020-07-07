@@ -7,15 +7,19 @@
     <h1 class="display-4">Hello there</h1>
     <p>Welcome to my blog. I am Suszkow a developer of this site. Right now the page is under construction so be patient.</p>
 </div>
-@foreach(var item in Model)
+@foreach (var item in Model)
 {
-    <h4 class="font-weight-light text-center">@item.Title</h4>
-    <p class="font-weight-light text-center">@item.Content</p>
-    <div class="row">
-        <div class="col-2 font-weight-lighter">Created: @item.CreateOn</div>
-        @if(item.UpdateOn != null)
-        {
-        <div class="col-2 font-weight-lighter text-right">Edited: @item.UpdateOn</div>
-        }
+    <h2 class="font-weight-light text-center">@item.Title</h2>
+    <div class="font-weight-lighter">
+        <div class="col-sm-3 font-weight-lighter">Published: @item.CreateOn</div>
     </div>
+    <hr class="solid" />
+    <p class="text-justify">@item.Content</p>
+    <hr class="dashed" />
+    @*<form asp-controller="Home" asp-action="AddComment"
+              asp-route-id="@item.ID" method="get">
+            <button type="submit" class="btn btn-primary">
+                Comment
+            </button>
+        </form>*@
 }
