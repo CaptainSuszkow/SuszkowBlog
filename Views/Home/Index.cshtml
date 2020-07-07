@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<SuszkowBlog.Models.Post>
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -6,3 +7,15 @@
     <h1 class="display-4">Hello there</h1>
     <p>Welcome to my blog. I am Suszkow a developer of this site. Right now the page is under construction so be patient.</p>
 </div>
+@foreach(var item in Model)
+{
+    <h4 class="font-weight-light text-center">@item.Title</h4>
+    <p class="font-weight-light text-center">@item.Content</p>
+    <div class="row">
+        <div class="col-2 font-weight-lighter">Created: @item.CreateOn</div>
+        @if(item.UpdateOn != null)
+        {
+        <div class="col-2 font-weight-lighter text-right">Edited: @item.UpdateOn</div>
+        }
+    </div>
+}
