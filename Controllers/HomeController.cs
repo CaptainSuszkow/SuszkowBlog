@@ -33,7 +33,7 @@ namespace SuszkowBlog.Controllers
             return View(posts);
         }
 
-        public IActionResult Privacy()
+        public IActionResult About()
         {
             return View();
         }
