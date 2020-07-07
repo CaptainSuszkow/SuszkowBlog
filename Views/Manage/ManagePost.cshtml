@@ -1,0 +1,51 @@
+﻿@model List<Post>
+@{
+    ViewData["Title"] = "Manage posts";
+}
+<div >
+    <h4 class="font-weight-light">List of posts</h4>
+    <form asp-controller="Manage" asp-action="AddPost"
+          method="get">
+        <button type="submit" class="btn btn-primary">
+            New post
+        </button>
+    </form>
+    <table class="table table-hover" style="width:100%">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Created</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (var post in Model)
+                {
+                    <tr>
+                        <th class="font-weight-light" width="60%">@post.Title</th>
+                        <th class="font-weight-light" width="20%">@post.CreateOn</th>
+                        <th>
+                            <form asp-controller="Manage" asp-action="EditPost"
+                                  asp-route-id="@post.ID" method="get">
+                                <button type="submit" class="btn btn-primary">
+                                    Edit
+                                </button>
+                            </form>
+                        </th>
+                        <th>
+                            <form asp-controller="Manage" asp-action="RemovePost"
+                                  asp-route-id="@post.ID" method="post">
+                                <button type="submit" class="btn btn-danger"
+                                        onclick="return confirm('Are you sure you want to delete post : @post.Title')">
+                                    Delete
+                                </button>
+                            </form>
+                        </th>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

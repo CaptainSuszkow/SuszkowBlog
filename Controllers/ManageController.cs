@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using SuszkowBlog.Areas.Identity.Data;
+using SuszkowBlog.Data;
+using SuszkowBlog.Models;
 using SuszkowBlog.Views.Manage;
 
 namespace SuszkowBlog.Controllers
@@ -16,11 +18,13 @@ namespace SuszkowBlog.Controllers
     {
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly DataDbContext _context;
 
-        public ManageController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
+        public ManageController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager, DataDbContext context)
         {
             _roleManager = roleManager;
             _userManager = userManager;
+            _context = context;
         }
         public IActionResult Index()
         {
@@ -199,6 +203,58 @@ namespace SuszkowBlog.Controllers
             }
 
             return RedirectToAction("EditRole", new { Id = roleId });
+        }
+        [HttpGet]
+        public IActionResult ManagePost()
+        {
+            return View(_context.Posts.ToList());
+        }
+        [HttpGet]
+        public IActionResult AddPost()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddPost(Post post)
+        {
+            await _context.Posts.AddAsync(post);
+            var result = await _context.SaveChangesAsync();
+            return RedirectToAction("ManagePost", "Manage");
+        }
+        [HttpPost]
+        public async Task<IActionResult> RemovePost(int id)
+        {
+            var post = _context.Posts.First(p => p.ID == id);
+            _context.Posts.Remove(post);
+            var result = await _context.SaveChangesAsync();
+
+            return RedirectToAction("ManagePost", "Manage");
+        }
+        [HttpGet]
+        public IActionResult EditPost(int id)
+        {
+            var post = _context.Posts.First(p => p.ID == id);
+            return View(post);
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditPost(Post post)
+        {
+            await _context.Posts.AddAsync(post);
+            _context.Entry(post).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("ManagePost", "Manage");
+        }
+
+        [HttpPost]
+        [Route("Manage/RemoveComment/{postId}/{id}")]
+        public async Task<IActionResult> RemoveComment(string id, int postId)
+        {
+            var comment = _context.Comments.First(c => c.ID == id);
+            _context.Comments.Remove(comment);
+            var result = await _context.SaveChangesAsync();
+
+            return RedirectToAction("EditPost", "Manage", new { id = postId });
         }
     }
 }
