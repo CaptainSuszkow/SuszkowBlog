@@ -1,0 +1,6 @@
+﻿@model SuszkowBlog.Models.Post
+
+<h1 class="font-weight-bold text-left">@Model.Title</h1>
+<h5 class="font-weight-normal text-left">@Model.CreateOn.ToString("MMM") / @Model.CreateOn.Day </h5>
+<hr class="solid" />
+<p class="text-justify font-weight-normal">@Model.Content</p>

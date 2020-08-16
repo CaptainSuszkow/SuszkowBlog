@@ -1,8 +1,14 @@
 {
   "dependencies": {
     "mssql3": {
+      "resourceId": null,
       "type": "mssql.onprem",
       "connectionId": "AuthDbContextConnection",
+      "secretStore": "LocalSecretsFile"
+    },
+    "mssql1": {
+      "type": "mssql.onprem",
+      "connectionId": "BlogDataDbConection",
       "secretStore": "LocalSecretsFile"
     }
   }

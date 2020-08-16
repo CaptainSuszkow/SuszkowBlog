@@ -3,6 +3,10 @@
     "mssql3": {
       "type": "mssql",
       "connectionId": "AuthDbContextConnection"
+    },
+    "mssql1": {
+      "type": "mssql",
+      "connectionId": "BlogDataDbConection"
     }
   }
 }

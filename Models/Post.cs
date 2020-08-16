@@ -17,3 +17,4 @@ namespace SuszkowBlog.Models
         public List<Comment> Comments { get; set; }
     }
 }
+    

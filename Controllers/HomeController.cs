@@ -23,17 +23,23 @@ namespace SuszkowBlog.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? pageNumber)
         {
-            var posts = await _context.Posts
-                .OrderByDescending(p=>p.CreateOn.Year)
-                .ThenByDescending(p=>p.CreateOn.Month)
-                .ToListAsync();
-            posts.Reverse();
-            return View(posts);
+            var posts = _context.Posts
+                .OrderByDescending(p => p.CreateOn.Year)
+                .ThenByDescending(p => p.CreateOn.Month)
+                .AsNoTracking();
+            int pageSize = 4;
+            return View(await PaginatedList<Post>.CreateAsync(posts, pageNumber ?? 1, pageSize));
+        }
+        public async Task<IActionResult> ShowPost(int id)
+        {
+            var post = await _context.Posts
+                .Where(p => p.ID == id).FirstAsync();
+            return View(post);
         }
 
-        public IActionResult Privacy()
+        public IActionResult About()
         {
             return View();
         }
@@ -48,12 +54,6 @@ namespace SuszkowBlog.Controllers
 
             return View();
         }
-        //[HttpPost]
-        //[Authorize(Roles = "User")]
-        //public async Task<IActionResult> AddComment(int id, Comment comment)
-        //{
-            
-        //}
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
