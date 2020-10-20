@@ -18,11 +18,9 @@ namespace SuszkowBlog.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly DataDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
-
-        public HomeController(ILogger<HomeController> logger, DataDbContext context, UserManager<ApplicationUser> userManager)
+  
+        public HomeController(ILogger<HomeController> logger, DataDbContext context)
         {
-            _userManager = userManager;
             _logger = logger;
             _context = context;
         }
