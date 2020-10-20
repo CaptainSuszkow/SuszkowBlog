@@ -4,9 +4,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using SuszkowBlog.Areas.Identity.Data;
 using SuszkowBlog.Data;
 using SuszkowBlog.Models;
 
@@ -16,9 +18,11 @@ namespace SuszkowBlog.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly DataDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public HomeController(ILogger<HomeController> logger, DataDbContext context)
+        public HomeController(ILogger<HomeController> logger, DataDbContext context, UserManager<ApplicationUser> userManager)
         {
+            _userManager = userManager;
             _logger = logger;
             _context = context;
         }

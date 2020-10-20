@@ -21,7 +21,7 @@ namespace SuszkowBlog.Areas.Identity
                         context.Configuration.GetConnectionString("AuthDbContextConnection")));
 
                 services.AddIdentity<ApplicationUser,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
-                    .AddEntityFrameworkStores<AuthDbContext>();
+                    .AddEntityFrameworkStores<AuthDbContext>().AddDefaultTokenProviders();
             });
         }
     }
