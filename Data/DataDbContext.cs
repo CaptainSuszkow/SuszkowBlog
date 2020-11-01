@@ -19,10 +19,10 @@ namespace SuszkowBlog.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Post>()
-                .HasMany(c=>c.Comments)
-                .WithOne(p=> p.Post)
-                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Post>();
+                //.HasMany(c=>c.Comments)
+                //.WithOne(p=> p.Post)
+                //.OnDelete(DeleteBehavior.Cascade);
         }
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)

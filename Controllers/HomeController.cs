@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using PusherServer;
 using SuszkowBlog.Areas.Identity.Data;
 using SuszkowBlog.Data;
 using SuszkowBlog.Models;
@@ -38,25 +39,30 @@ namespace SuszkowBlog.Controllers
         }
         public async Task<IActionResult> ShowPost(int id)
         {
-            var post = await _context.Posts
-                .Where(p => p.ID == id).FirstAsync();
-            return View(post);
+            return View((Post) await _context.Posts.FindAsync(id));
         }
 
         public IActionResult About()
         {
             return View();
         }
-
-        [HttpGet]
-        [Authorize(Roles = "User")]
-        public async Task<IActionResult> AddComment(int id)
+        public ActionResult Comments(int? id)
         {
-            var post = _context.Posts.First(p => p.ID == id);
-            ViewBag.Title = post.Title;
-            ViewBag.ID = post.ID;
+            var comments = _context.Comments.Where(x => x.PostID == id).ToArray();
+            return Json(comments);
+        }
 
-            return View();
+        [HttpPost]
+        [Authorize(Roles = "User")]
+        public async Task<ActionResult> AddComment(string content, int postID)
+        {
+            var data = new Comment();
+            data.UserID = _userManager.GetUserId(User);
+            data.Content = content;
+            data.PostID = postID;
+            _context.Comments.Add(data);
+            _context.SaveChanges();
+            return RedirectToAction("Index", "Home");//, new { id = postID });
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

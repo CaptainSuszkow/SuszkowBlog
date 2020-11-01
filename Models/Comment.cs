@@ -14,6 +14,7 @@ namespace SuszkowBlog.Models
         [Required]
         [StringLength(300)]
         public string Content { get; set; }
-        public Post Post { get; set; }
+        [Required]
+        public int PostID { get; set; }
     }
 }

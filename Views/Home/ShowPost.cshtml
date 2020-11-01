@@ -1,7 +1,53 @@
-﻿@model SuszkowBlog.Models.Post
+﻿
 
-<h1 class="font-weight-bold text-left">@Model.Title</h1>
-<h5 class="font-weight-normal text-left">@Model.CreateOn.ToString("MMM") / @Model.CreateOn.Day </h5>
-<hr class="solid" />
+@using Microsoft.AspNetCore.Identity
+@using SuszkowBlog.Areas.Identity.Data
 
-<p class="text-justify font-weight-normal">@Html.Raw(Model.Content)</p>
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@addTagHelper "*, Microsoft.AspNetCore.Mvc.TagHelpers"
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-10">
+            <h1 class="font-weight-bold text-left">@Model.Title</h1>
+            <h5 class="font-weight-normal text-left">@Model.CreateOn.ToString("MMM") / @Model.CreateOn.Day </h5>
+            <hr class="solid" />
+
+            <p class="text-left font-weight-normal">@Html.Raw(Model.Content)</p>
+        </div>
+        <div class="col-md-1">
+        </div>
+    </div>
+
+
+
+        @*@if (SignInManager.IsSignedIn(User))
+            {
+
+
+                <div>
+                    <form asp-action="AddComment" method="post">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <input type="button" title="XD" value="XD" data-form-method="post" onclick="location.href='@Url.Action("AddComment", "Home", new {  content = "XD",postId = @Model.ID})'" />
+                        <a asp-action="ManagePost" class="btn btn-cancel">Cancel</a>
+                    </form>
+                </div>
+            }*@
+
+        @*@{
+                foreach (var comment in Model.Comments)
+                {
+                    <h6>@comment.UserID</h6>
+                    <p>@comment.Content</p>
+                }
+            }*@
+    </div>
+</div>
+
